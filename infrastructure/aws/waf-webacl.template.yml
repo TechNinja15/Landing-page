@@ -1,0 +1,98 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  WAF Web ACL for Thrive Skill Tech's Amplify-hosted frontend.
+
+  MUST be deployed in us-east-1 — CloudFront-scoped WAF web ACLs are
+  only creatable in that region regardless of where your app actually
+  serves from, this is an AWS-wide restriction.
+
+  This template creates the Web ACL itself. Attaching it to your
+  Amplify app's CloudFront distribution is a separate, unavoidably
+  manual step (see Outputs below) — Amplify Hosting manages its
+  CloudFront distribution internally and doesn't expose it as an
+  editable CloudFormation resource, so there's no CFN resource that
+  can wire the two together automatically.
+
+Parameters:
+  RateLimitPerFiveMinutes:
+    Type: Number
+    Default: 2000
+    Description: Requests per IP per 5-minute window before WAF starts blocking. Lower this if you see abuse on /api/leads specifically.
+
+Resources:
+  WebACL:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: thrive-skill-tech-web-acl
+      Scope: CLOUDFRONT
+      DefaultAction:
+        Allow: {}
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: thrive-skill-tech-web-acl
+      Rules:
+        - Name: AWS-AWSManagedRulesCommonRuleSet
+          Priority: 0
+          OverrideAction:
+            None: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesCommonRuleSet
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: CommonRuleSet
+
+        - Name: AWS-AWSManagedRulesKnownBadInputsRuleSet
+          Priority: 1
+          OverrideAction:
+            None: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesKnownBadInputsRuleSet
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: KnownBadInputs
+
+        - Name: AWS-AWSManagedRulesAmazonIpReputationList
+          Priority: 2
+          OverrideAction:
+            None: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesAmazonIpReputationList
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: IpReputationList
+
+        - Name: RateLimitPerIp
+          Priority: 3
+          Action:
+            Block: {}
+          Statement:
+            RateBasedStatement:
+              Limit: !Ref RateLimitPerFiveMinutes
+              AggregateKeyType: IP
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: RateLimitPerIp
+
+Outputs:
+  WebACLArn:
+    Value: !GetAtt WebACL.Arn
+    Description: >
+      MANUAL STEP REQUIRED: AWS Console -> WAF & Shield -> Web ACLs
+      -> thrive-skill-tech-web-acl -> "Associated AWS resources" tab
+      -> Add AWS resources -> Resource type: CloudFront distributions
+      -> select the distribution tagged with your Amplify App ID
+      (find it via CloudFront Console -> Distributions -> search by
+      the amplifyapp.com alias, or via `aws cloudfront list-distributions`
+      and matching the Origin to your Amplify app). This association
+      cannot be done via CloudFormation for Amplify-managed distributions.

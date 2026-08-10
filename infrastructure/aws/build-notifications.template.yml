@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Build-failure alerting for the Thrive Skill Tech Amplify app. Unlike
+  the WAF template, this one needs no manual console step — Amplify
+  emits build status events to EventBridge automatically, so this
+  hooks in cleanly via CloudFormation alone.
+
+Parameters:
+  AmplifyAppId:
+    Type: String
+    Description: From the Outputs of amplify-app.template.yml (AmplifyAppId)
+  AlertEmail:
+    Type: String
+    Description: Where build-failure notifications get sent
+
+Resources:
+  BuildAlertsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: thrive-skill-tech-build-alerts
+
+  BuildAlertsSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref BuildAlertsTopic
+      Protocol: email
+      Endpoint: !Ref AlertEmail
+      # Note: AWS will send a subscription confirmation email to
+      # AlertEmail after this stack deploys — someone needs to click
+      # "Confirm subscription" in that email or no alerts will arrive.
+      # CloudFormation cannot auto-confirm this on your behalf.
+
+  BuildFailureRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: thrive-skill-tech-build-failure
+      Description: Fires when an Amplify build for this app fails
+      EventPattern:
+        source:
+          - aws.amplify
+        detail-type:
+          - Amplify Deployment Status Change
+        detail:
+          appId:
+            - !Ref AmplifyAppId
+          jobStatus:
+            - FAILED
+      State: ENABLED
+      Targets:
+        - Id: NotifyOnBuildFailure
+          Arn: !Ref BuildAlertsTopic
+
+  SnsTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      Topics:
+        - !Ref BuildAlertsTopic
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AllowEventBridgePublish
+            Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: sns:Publish
+            Resource: !Ref BuildAlertsTopic
+            Condition:
+              ArnEquals:
+                aws:SourceArn: !GetAtt BuildFailureRule.Arn
+
+Outputs:
+  TopicArn:
+    Value: !Ref BuildAlertsTopic
+  ReminderNote:
+    Value: >
+      Check AlertEmail's inbox for an SNS subscription confirmation
+      email and click "Confirm subscription" — alerts are silent
+      until that's done.

@@ -1,0 +1,135 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Thrive Skill Tech — AWS Amplify Hosting app + production branch for the
+  Next.js 15 App Router frontend. Deploy this AFTER the one-time manual
+  step below — there is no way to skip it, it's a GitHub-side
+  authorization, not something CloudFormation can do on your behalf.
+
+  ONE-TIME MANUAL STEP (do this first, once per AWS account/region):
+    AWS Console -> Amplify -> "New app" -> "Host web app" -> GitHub
+    -> follow the OAuth prompt to install the "AWS Amplify" GitHub App
+    on your repo/org, then cancel out of the console wizard.
+    This authorizes the account to create Amplify apps against your
+    repo via CloudFormation without needing a stored access token.
+    (This is an AWS/GitHub platform limitation, not something this
+    template can automate away.)
+
+Parameters:
+  RepositoryUrl:
+    Type: String
+    Description: e.g. https://github.com/your-org/thrive-skill-tech
+  BranchName:
+    Type: String
+    Default: main
+  NextPublicSupabaseUrl:
+    Type: String
+    Description: Supabase project URL (Settings -> API -> Project URL)
+  NextPublicSupabaseAnonKey:
+    Type: String
+    Description: Supabase anon/public key (safe to expose client-side)
+  SupabaseServiceRoleKey:
+    Type: String
+    NoEcho: true
+    Description: >
+      Supabase service_role secret key. NoEcho hides it from console
+      output, but it will still appear in this stack's CloudFormation
+      parameter history, visible to anyone with CloudFormation read
+      access to this stack. For stricter secret hygiene, leave this
+      blank and instead set SUPABASE_SERVICE_ROLE_KEY directly in
+      Amplify Console -> App settings -> Environment variables after
+      the stack is created — that path never touches CloudFormation.
+    Default: ""
+  GoogleSheetWebhookUrl:
+    Type: String
+    Description: Optional — leave blank to skip the Google Sheets lead mirror
+    Default: ""
+  CustomDomainName:
+    Type: String
+    Description: Optional — e.g. thriveskilltech.com. Leave blank to skip custom domain setup.
+    Default: ""
+
+Conditions:
+  HasCustomDomain: !Not [!Equals [!Ref CustomDomainName, ""]]
+
+Resources:
+  AmplifyApp:
+    Type: AWS::Amplify::App
+    Properties:
+      Name: thrive-skill-tech
+      Repository: !Ref RepositoryUrl
+      Platform: WEB_COMPUTE  # required for Next.js SSR/App Router — plain WEB only supports static export
+      EnvironmentVariables:
+        - Name: NEXT_PUBLIC_SUPABASE_URL
+          Value: !Ref NextPublicSupabaseUrl
+        - Name: NEXT_PUBLIC_SUPABASE_ANON_KEY
+          Value: !Ref NextPublicSupabaseAnonKey
+        - Name: SUPABASE_SERVICE_ROLE_KEY
+          Value: !Ref SupabaseServiceRoleKey
+        - Name: GOOGLE_SHEET_WEBHOOK_URL
+          Value: !Ref GoogleSheetWebhookUrl
+        - Name: AMPLIFY_MONOREPO_APP_ROOT
+          Value: ""  # not a monorepo — left blank intentionally
+      BuildSpec: |
+        version: 1
+        frontend:
+          phases:
+            preBuild:
+              commands:
+                - npm ci
+            build:
+              commands:
+                - npm run build
+          artifacts:
+            baseDirectory: .next
+            files:
+              - '**/*'
+          cache:
+            paths:
+              - node_modules/**/*
+              - .next/cache/**/*
+      CustomRules:
+        # Amplify's Next.js SSR compute handles routing internally;
+        # this catch-all is only needed if you add a static-export
+        # fallback later. Left here as documentation, not required
+        # for WEB_COMPUTE.
+        - Source: /<*>
+          Target: /index.html
+          Status: '404-200'
+
+  ProductionBranch:
+    Type: AWS::Amplify::Branch
+    Properties:
+      AppId: !GetAtt AmplifyApp.AppId
+      BranchName: !Ref BranchName
+      Stage: PRODUCTION
+      EnableAutoBuild: true
+      Framework: Next.js - SSR
+
+  CustomDomain:
+    Type: AWS::Amplify::Domain
+    Condition: HasCustomDomain
+    Properties:
+      AppId: !GetAtt AmplifyApp.AppId
+      DomainName: !Ref CustomDomainName
+      SubDomainSettings:
+        - Prefix: ""
+          BranchName: !GetAtt ProductionBranch.BranchName
+        - Prefix: "www"
+          BranchName: !GetAtt ProductionBranch.BranchName
+
+Outputs:
+  AmplifyAppId:
+    Value: !GetAtt AmplifyApp.AppId
+    Description: >
+      Needed for the WAF template (waf-webacl.template.yml) and for
+      finding this app's CloudFront distribution in the AWS console
+      (CloudFront distributions are tagged with this App ID).
+  DefaultDomain:
+    Value: !Sub "https://${BranchName}.${AmplifyApp.DefaultDomain}"
+    Description: The auto-generated Amplify URL — live within a few minutes of the first build.
+  CustomDomainStatus:
+    Condition: HasCustomDomain
+    Value: !Sub >
+      Domain verification pending — check Amplify Console -> Domain
+      management for the DNS records to add at your registrar (or
+      Route 53 hosted zone) to activate ${CustomDomainName}.
