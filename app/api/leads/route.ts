@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
+import type { Course } from "@/types/database";
 
 /**
  * POST /api/leads
@@ -102,7 +103,7 @@ export async function POST(req: NextRequest) {
         .from("courses")
         .select("id")
         .eq("title", lead.course)
-        .maybeSingle();
+        .maybeSingle<Pick<Course, "id">>();
       courseId = courseRow?.id ?? null;
     }
 
