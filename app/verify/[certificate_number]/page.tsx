@@ -174,7 +174,7 @@ export default async function VerifyCertificatePage({ params }: Props) {
                 href="mailto:thriveskilltech@gmail.com"
                 style={{ fontSize: 13.5, fontWeight: 600, color: C.purple, textDecoration: "none" }}
               >
-                Contact us if you believe this is an error →
+                Contact us if you believe this is an error &rarr;
               </a>
             </div>
           )}
