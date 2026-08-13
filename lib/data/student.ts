@@ -1,5 +1,6 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "@/types/database";
+import type { createClient } from "@/lib/supabase/server";
+
+type TypedSupabaseClient = Awaited<ReturnType<typeof createClient>>;
 
 /**
  * All queries here run server-side (called from app/portal/page.tsx,
@@ -13,7 +14,7 @@ import type { Database } from "@/types/database";
  * column that isn't the join key) that come up with nested selects.
  */
 
-export async function getStudentDashboardData(supabase: SupabaseClient<Database>, userId: string) {
+export async function getStudentDashboardData(supabase: TypedSupabaseClient, userId: string) {
   const [profileRes, enrollmentsRes] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", userId).single(),
     supabase
@@ -80,7 +81,7 @@ export async function getStudentDashboardData(supabase: SupabaseClient<Database>
  * Called for whichever enrollment the student is currently viewing
  * in "My Courses" — not all enrollments at once, to keep this cheap.
  */
-export async function getCourseDetail(supabase: SupabaseClient<Database>, enrollmentId: string, courseId: string) {
+export async function getCourseDetail(supabase: TypedSupabaseClient, enrollmentId: string, courseId: string) {
   const [modulesRes, progressRes] = await Promise.all([
     supabase.from("modules").select("id, title, order_index").eq("course_id", courseId).order("order_index"),
     supabase.from("lesson_progress").select("lesson_id, completed").eq("enrollment_id", enrollmentId),
