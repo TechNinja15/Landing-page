@@ -170,8 +170,7 @@ export default async function VerifyCertificatePage({ params }: Props) {
                 No certificate matches ID <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>{certificate_number}</span>.
                 Double-check the ID, or it may have been entered incorrectly.
               </p>
-              
-               href="mailto:thriveskilltech@gmail.com"
+              href="mailto:thriveskilltech@gmail.com"
                 style={{ fontSize: 13.5, fontWeight: 600, color: C.purple, textDecoration: "none" }}
               >
                 Contact us if you believe this is an error
