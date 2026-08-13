@@ -107,6 +107,10 @@ export async function POST(req: NextRequest) {
       courseId = courseRow?.id ?? null;
     }
 
+   // Cast needed: this project's Database type and the installed
+    // @supabase/supabase-js version don't fully agree on the generic
+    // shape .insert() expects, which makes TS infer `never[]` here
+    // even though the payload is correct at runtime.
     const { error } = await supabase.from("leads").insert({
       name: lead.name.trim(),
       mobile: lead.phone?.trim() || "not provided",
@@ -116,7 +120,7 @@ export async function POST(req: NextRequest) {
       notes: [lead.preferred_time && `Preferred time: ${lead.preferred_time}`, lead.notes]
         .filter(Boolean)
         .join(" · ") || null,
-    });
+    } as never);
 
     if (error) throw error;
     supabaseOk = true;
