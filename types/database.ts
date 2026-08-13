@@ -141,7 +141,12 @@ export interface Database {
       certificates: { Row: Certificate; Insert: Partial<Certificate>; Update: Partial<Certificate>; Relationships: [] };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      verify_certificate: {
+        Args: { cert_number: string };
+        Returns: any[];
+      };
+    };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };
