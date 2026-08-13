@@ -1,7 +1,8 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "@/types/database";
+import type { createClient } from "@/lib/supabase/server";
 
-export async function getAdminDashboardData(supabase: SupabaseClient<Database>) {
+type TypedSupabaseClient = Awaited<ReturnType<typeof createClient>>;
+
+export async function getAdminDashboardData(supabase: TypedSupabaseClient) {
   const [leadsRes, coursesRes, batchesRes, enrollmentsRes, paymentsRes] = await Promise.all([
     supabase
       .from("leads")
@@ -25,6 +26,7 @@ export async function getAdminDashboardData(supabase: SupabaseClient<Database>) 
   (modulesRes.data ?? []).forEach((m: any) => {
     moduleCountByCourse.set(m.course_id, (moduleCountByCourse.get(m.course_id) ?? 0) + 1);
   });
+
   const batchCountByCourse = new Map<string, number>();
   (batchesRes.data ?? []).forEach((b: any) => {
     batchCountByCourse.set(b.course_id, (batchCountByCourse.get(b.course_id) ?? 0) + 1);
@@ -45,7 +47,7 @@ export async function getAdminDashboardData(supabase: SupabaseClient<Database>) 
   };
 }
 
-export async function getWebsiteSettings(supabase: SupabaseClient<Database>) {
+export async function getWebsiteSettings(supabase: TypedSupabaseClient) {
   const { data } = await supabase.from("website_settings").select("key, value").in("key", ["hero_content", "hero_stats"]);
   const byKey = Object.fromEntries((data ?? []).map((row: any) => [row.key, row.value]));
   return {
@@ -54,7 +56,7 @@ export async function getWebsiteSettings(supabase: SupabaseClient<Database>) {
   };
 }
 
-export async function getCounselors(supabase: SupabaseClient<Database>) {
+export async function getCounselors(supabase: TypedSupabaseClient) {
   const { data } = await supabase.from("profiles").select("id, full_name").in("role", ["admin", "super_admin"]);
   return data ?? [];
 }
