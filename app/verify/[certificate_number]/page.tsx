@@ -50,7 +50,11 @@ export default async function VerifyCertificatePage({ params }: Props) {
   // exposes only student_name/course_title/issued_at/is_valid, never
   // the full certificates row, so this page works for anonymous
   // visitors without granting broader table access.
-  const { data, error } = await supabase.rpc("verify_certificate", { cert_number: certificate_number });
+  //
+  // Cast needed: same @supabase/ssr vs @supabase/supabase-js generic
+  // mismatch as elsewhere in this project — TS can't resolve the RPC's
+  // Args type through this client, even though it's correct at runtime.
+  const { data, error } = await supabase.rpc("verify_certificate", { cert_number: certificate_number } as never);
   const result = Array.isArray(data) && data.length > 0 ? data[0] : null;
   const isValid = !error && result?.is_valid;
 
@@ -166,7 +170,7 @@ export default async function VerifyCertificatePage({ params }: Props) {
                 No certificate matches ID <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>{certificate_number}</span>.
                 Double-check the ID, or it may have been entered incorrectly.
               </p>
-              <a
+              
                 href="mailto:thriveskilltech@gmail.com"
                 style={{ fontSize: 13.5, fontWeight: 600, color: C.purple, textDecoration: "none" }}
               >
