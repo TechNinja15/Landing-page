@@ -1,15 +1,14 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import AuthShell, { AuthInput, AuthButton, AuthError, C } from "@/components/auth/AuthShell";
+import type { Profile } from "@/types/database";
 
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -19,10 +18,8 @@ export default function LoginPage() {
     e.preventDefault();
     setError(null);
     setLoading(true);
-
     const supabase = createClient();
     const { data, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-
     if (signInError) {
       setError(
         signInError.message === "Invalid login credentials"
@@ -32,7 +29,6 @@ export default function LoginPage() {
       setLoading(false);
       return;
     }
-
     // Respect a role-gated redirect from middleware.ts if present,
     // otherwise route by role so admins land in /admin, everyone else in /portal.
     if (redirectTo) {
@@ -40,13 +36,11 @@ export default function LoginPage() {
       router.refresh();
       return;
     }
-
     const { data: profile } = await supabase
       .from("profiles")
       .select("role")
       .eq("id", data.user.id)
-      .single();
-
+      .single<Pick<Profile, "role">>();
     const destination = profile && ["admin", "super_admin"].includes(profile.role) ? "/admin" : "/portal";
     router.push(destination);
     router.refresh();
