@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default async function PortalPage() {
   // middleware.ts already redirects unauthenticated requests before they
-  // reach here — this is a second, server-side check rather than trusting
+  // reach here - this is a second, server-side check rather than trusting
   // middleware alone, since middleware can be bypassed by direct edge
   // requests in some deployment setups.
   const supabase = await createClient();

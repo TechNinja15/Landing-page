@@ -5,7 +5,7 @@ import type { Database } from "@/types/database";
 
 /**
  * Use inside Server Components, Server Actions, and Route Handlers.
- * Never expose the service_role key to the client — this uses the
+ * Never expose the service_role key to the client - this uses the
  * anon key and relies on RLS for access control.
  */
 export async function createClient() {
@@ -25,7 +25,7 @@ export async function createClient() {
               cookieStore.set(name, value, options)
             );
           } catch {
-            // called from a Server Component — safe to ignore if you
+            // called from a Server Component - safe to ignore if you
             // have middleware refreshing sessions (see middleware.ts)
           }
         },
@@ -35,7 +35,7 @@ export async function createClient() {
 }
 
 /**
- * Service-role client — SERVER ONLY (route handlers / server actions),
+ * Service-role client - SERVER ONLY (route handlers / server actions),
  * never imported into client bundles. Bypasses RLS. Use sparingly:
  * e.g. certificate generation, bulk admin operations.
  */

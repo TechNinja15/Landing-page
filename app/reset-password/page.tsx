@@ -16,7 +16,7 @@ export default function ResetPasswordPage() {
   // The recovery link lands the user here already authenticated (the
   // /auth/callback route handler exchanges the code for a session before
   // redirecting here). Confirm a session actually exists before letting
-  // them submit — otherwise updateUser() would silently fail.
+  // them submit - otherwise updateUser() would silently fail.
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getSession().then(({ data }) => {

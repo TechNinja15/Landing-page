@@ -43,7 +43,7 @@ import {
 } from "recharts";
 
 /* ============================================================
-   Brand tokens — same system across landing / student / admin
+   Brand tokens - same system across landing / student / admin
    ============================================================ */
 const C = {
   purple: "#8B5CF6",
@@ -69,7 +69,7 @@ const STAGES = [
 const SOURCE_COLORS = [C.purple, C.orange, C.gold, C.midnight, "#B8A6E0", "#4A9B8E"];
 
 function timeAgoDate(dateStr) {
-  if (!dateStr) return "—";
+  if (!dateStr) return " - ";
   return new Date(dateStr).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
 }
 
@@ -162,7 +162,7 @@ function DashboardScreen({ leads, students, courses, payments }) {
 
   const revenueTrend = useMemo(() => {
     // Groups real `payments` rows by month. Stays an empty-value series
-    // (0 for every month) until payments actually exist — never backfilled
+    // (0 for every month) until payments actually exist - never backfilled
     // with invented figures.
     const months = ["Mar", "Apr", "May", "Jun", "Jul", "Aug"];
     const byMonth = Object.fromEntries(months.map((m) => [m, 0]));
@@ -195,7 +195,7 @@ function DashboardScreen({ leads, students, courses, payments }) {
     <div className="space-y-6">
       <div>
         <h1 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 24 }}>Overview</h1>
-        <p style={{ fontSize: 13.5, opacity: 0.55, marginTop: 3 }}>Live from your Supabase tables — nothing here is invented.</p>
+        <p style={{ fontSize: 13.5, opacity: 0.55, marginTop: 3 }}>Live from your Supabase tables - nothing here is invented.</p>
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -211,7 +211,7 @@ function DashboardScreen({ leads, students, courses, payments }) {
             <h3 style={{ fontFamily: fontDisplay, fontWeight: 600, fontSize: 15 }}>Monthly revenue</h3>
             <DollarSign size={16} style={{ opacity: 0.4 }} />
           </div>
-          <p style={{ fontSize: 11.5, opacity: 0.45, marginBottom: 10 }}>Empty until payments are recorded — no placeholder revenue shown.</p>
+          <p style={{ fontSize: 11.5, opacity: 0.45, marginBottom: 10 }}>Empty until payments are recorded - no placeholder revenue shown.</p>
           <ResponsiveContainer width="100%" height={220}>
             <AreaChart data={revenueTrend}>
               <defs>
@@ -456,7 +456,7 @@ function LeadsScreen({ notify, initialLeads, courses, counselors }) {
       .eq("id", draft.id);
 
     if (error) {
-      notify("Couldn't save — try again");
+      notify("Couldn't save - try again");
       return;
     }
 
@@ -470,7 +470,7 @@ function LeadsScreen({ notify, initialLeads, courses, counselors }) {
     const supabase = createClient();
     const { error } = await supabase.from("leads").delete().eq("id", id);
     if (error) {
-      notify("Couldn't delete — try again");
+      notify("Couldn't delete - try again");
       return;
     }
     setLeads((prev) => prev.filter((l) => l.id !== id));
@@ -494,7 +494,7 @@ function LeadsScreen({ notify, initialLeads, courses, counselors }) {
       .single();
 
     if (error) {
-      notify("Couldn't create lead — try again");
+      notify("Couldn't create lead - try again");
       return;
     }
 
@@ -503,7 +503,7 @@ function LeadsScreen({ notify, initialLeads, courses, counselors }) {
     notify("Lead created");
   };
 
-  // Client-side CSV export — real download, no backend needed.
+  // Client-side CSV export - real download, no backend needed.
   const handleExport = () => {
     const headers = ["Name", "Mobile", "Email", "Course", "Source", "Stage", "Counselor", "Next Follow-up"];
     const rows = filtered.map((l) => [l.name, l.mobile, l.email, l.courses?.title, l.source, l.stage, l.profiles?.full_name || "Unassigned", l.next_follow_up_date]);
@@ -566,9 +566,9 @@ function LeadsScreen({ notify, initialLeads, courses, counselors }) {
                   <td style={{ padding: "13px 16px", fontWeight: 600 }}>{l.name}</td>
                   <td style={{ padding: "13px 16px" }}>
                     <div className="flex items-center gap-1.5 opacity-70"><Phone size={12} />{l.mobile}</div>
-                    <div className="flex items-center gap-1.5 opacity-50 mt-0.5"><Mail size={12} />{l.email || "—"}</div>
+                    <div className="flex items-center gap-1.5 opacity-50 mt-0.5"><Mail size={12} />{l.email || " - "}</div>
                   </td>
-                  <td style={{ padding: "13px 16px", opacity: 0.75 }}>{l.courses?.title || "—"}</td>
+                  <td style={{ padding: "13px 16px", opacity: 0.75 }}>{l.courses?.title || " - "}</td>
                   <td style={{ padding: "13px 16px", opacity: 0.75 }}>{l.source}</td>
                   <td style={{ padding: "13px 16px" }}><StagePill stage={l.stage} /></td>
                   <td style={{ padding: "13px 16px", opacity: 0.75 }}>{l.profiles?.full_name || "Unassigned"}</td>
@@ -624,7 +624,7 @@ function StudentsScreen({ notify, students, payments }) {
                 <tr key={s.id} style={{ borderBottom: "1px solid rgba(22,0,30,0.05)" }}>
                   <td style={{ padding: "13px 16px", fontWeight: 600 }}>{s.profiles?.full_name}</td>
                   <td style={{ padding: "13px 16px", opacity: 0.75 }}>{s.courses?.title}</td>
-                  <td style={{ padding: "13px 16px", opacity: 0.75 }}>{s.batches?.name || "—"}</td>
+                  <td style={{ padding: "13px 16px", opacity: 0.75 }}>{s.batches?.name || " - "}</td>
                   <td style={{ padding: "13px 16px", width: 160 }}>
                     <div className="flex items-center gap-2">
                       <div className="flex-1 rounded-full h-1.5" style={{ background: "rgba(22,0,30,0.08)" }}>
@@ -709,7 +709,7 @@ function BatchesScreen({ notify, batches, students }) {
                 <div style={{ fontFamily: fontDisplay, fontWeight: 600, fontSize: 15 }}>{b.name}</div>
                 <div style={{ fontSize: 12.5, opacity: 0.6, marginTop: 6 }}>Trainer: {b.profiles?.full_name || "Unassigned"}</div>
                 <div className="flex items-center justify-between mt-4">
-                  <span style={{ fontSize: 12.5, opacity: 0.6 }}>{enrolledCount}/{b.capacity ?? "—"} students</span>
+                  <span style={{ fontSize: 12.5, opacity: 0.6 }}>{enrolledCount}/{b.capacity ?? " - "} students</span>
                   <span style={{ fontSize: 11.5, fontWeight: 600, color: C.purple, textTransform: "capitalize" }}>{b.status}</span>
                 </div>
               </Card>
@@ -741,7 +741,7 @@ function CertificatesScreen({ notify, students }) {
     const { data, error } = await supabase.functions.invoke("generate-certificate", { body: { bulk: true } });
     setGenerating(false);
     if (error) {
-      notify("Couldn't reach the certificate function — check it's deployed (see supabase/functions/generate-certificate)");
+      notify("Couldn't reach the certificate function - check it's deployed (see supabase/functions/generate-certificate)");
       return;
     }
     notify(`Generated ${data?.generated?.length ?? 0} certificate(s)`);
@@ -768,15 +768,15 @@ function CertificatesScreen({ notify, students }) {
                 <Award size={18} />
               </div>
               <div className="flex-1">
-                <div style={{ fontSize: 14, fontWeight: 600 }}>{s.profiles?.full_name} — {s.courses?.title}</div>
-                <div style={{ fontSize: 12.5, opacity: 0.55, marginTop: 2 }}>{s.progress_percent}% complete — eligible for auto-generation on completion</div>
+                <div style={{ fontSize: 14, fontWeight: 600 }}>{s.profiles?.full_name} - {s.courses?.title}</div>
+                <div style={{ fontSize: 12.5, opacity: 0.55, marginTop: 2 }}>{s.progress_percent}% complete - eligible for auto-generation on completion</div>
               </div>
             </div>
           </Card>
         ))
       )}
       <p style={{ fontSize: 12.5, opacity: 0.5 }}>
-        Certificates issue automatically via a Supabase Edge Function (<code>supabase/functions/generate-certificate</code>) triggered when <code>enrollments.progress_percent</code> reaches 100 — generating a unique <code>certificate_number</code>, a PDF with an embedded QR code, and storing both via the public <code>verify_certificate()</code> RPC. "Bulk generate" above calls the same function directly for anything the trigger missed.
+        Certificates issue automatically via a Supabase Edge Function (<code>supabase/functions/generate-certificate</code>) triggered when <code>enrollments.progress_percent</code> reaches 100 - generating a unique <code>certificate_number</code>, a PDF with an embedded QR code, and storing both via the public <code>verify_certificate()</code> RPC. "Bulk generate" above calls the same function directly for anything the trigger missed.
       </p>
     </div>
   );
@@ -812,7 +812,7 @@ function ContentScreen({ initialSettings, adminId, notify }) {
     );
 
     setSaving(false);
-    notify(error ? "Couldn't save — try again" : "Saved to website_settings ✓");
+    notify(error ? "Couldn't save - try again" : "Saved to website_settings ✓");
   };
 
   return (
@@ -820,7 +820,7 @@ function ContentScreen({ initialSettings, adminId, notify }) {
       <div>
         <h1 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 24 }}>Website Content</h1>
         <p style={{ fontSize: 13, opacity: 0.55, marginTop: 3 }}>
-          Edits here write to the <code>website_settings</code> table — no deploy needed for the homepage to update.
+          Edits here write to the <code>website_settings</code> table - no deploy needed for the homepage to update.
         </p>
       </div>
 
@@ -855,7 +855,7 @@ function ContentScreen({ initialSettings, adminId, notify }) {
                 onChange={(e) => setStats({ ...stats, [k]: e.target.value.replace(/[^0-9]/g, "") })}
                 className="w-full mt-1.5 rounded-xl px-3 py-2.5"
                 style={{ background: C.lavender, border: "1px solid rgba(22,0,30,0.1)", fontSize: 14, fontFamily: fontMono }}
-                placeholder="—"
+                placeholder=" - "
               />
             </div>
           ))}

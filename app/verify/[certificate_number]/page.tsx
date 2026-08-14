@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { certificate_number } = await params;
   return {
     title: `Verify Certificate ${certificate_number}`,
-    // Certificate results include a real person's name — kept out of
+    // Certificate results include a real person's name - kept out of
     // search results deliberately, same reasoning as the portal pages.
     robots: { index: false, follow: false },
   };
@@ -46,7 +46,7 @@ export default async function VerifyCertificatePage({ params }: Props) {
   const supabase = await createClient();
 
   // verify_certificate is a public SECURITY DEFINER RPC (see
-  // 0003_assignments_certificates_payments.sql) — it deliberately
+  // 0003_assignments_certificates_payments.sql) - it deliberately
   // exposes only student_name/course_title/issued_at/is_valid, never
   // the full certificates row, so this page works for anonymous
   // visitors without granting broader table access.
@@ -129,7 +129,7 @@ export default async function VerifyCertificatePage({ params }: Props) {
 
               <p style={{ fontSize: 12, opacity: 0.45, marginTop: 20, lineHeight: 1.5 }}>
                 This page confirms the certificate above was genuinely issued by Thrive Skill Tech. Verified
-                directly against our records — nothing on this page can be edited by the certificate holder.
+                directly against our records - nothing on this page can be edited by the certificate holder.
               </p>
             </div>
           ) : (
@@ -170,7 +170,7 @@ export default async function VerifyCertificatePage({ params }: Props) {
                 href="mailto:thriveskilltech@gmail.com"
                 style={{ fontSize: 13.5, fontWeight: 600, color: C.purple, textDecoration: "none" }}
               >
-                Contact us if you believe this is an error →
+                Contact us if you believe this is an error ->
               </a>
             </div>
           )}

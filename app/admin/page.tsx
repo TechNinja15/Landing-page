@@ -21,7 +21,7 @@ export default async function AdminPage() {
 
   const { data: profile } = await supabase.from("profiles").select("role, full_name, email").eq("id", user.id).single();
 
-  // middleware.ts checks this too — duplicated here deliberately, same
+  // middleware.ts checks this too - duplicated here deliberately, same
   // reasoning as portal/page.tsx: don't let the admin UI render even
   // briefly for a non-admin session.
   if (!profile || !["admin", "super_admin"].includes(profile.role)) {

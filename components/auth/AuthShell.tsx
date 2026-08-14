@@ -48,7 +48,7 @@ export default function AuthShell({
         .auth-link:hover { text-decoration: underline; }
       `}</style>
 
-      {/* Left — form panel */}
+      {/* Left - form panel */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px", maxWidth: 480, margin: "0 auto", width: "100%" }}>
         <a href="/" style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 40, fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 18, color: C.aubergine, textDecoration: "none" }}>
           <LogoMark size={28} /> Thrive Skill Tech
@@ -62,7 +62,7 @@ export default function AuthShell({
         {footer && <div style={{ marginTop: 28, fontSize: 13.5, color: C.aubergine, opacity: 0.7 }}>{footer}</div>}
       </div>
 
-      {/* Right — brand panel (hidden on small screens via inline media query workaround) */}
+      {/* Right - brand panel (hidden on small screens via inline media query workaround) */}
       <div
         className="auth-brand-panel"
         style={{
@@ -93,7 +93,7 @@ export default function AuthShell({
             <span style={{ color: C.purple }}>Built with AI.</span>
           </div>
           <p style={{ color: "rgba(252,247,255,0.6)", fontSize: 14.5, marginTop: 16, lineHeight: 1.6 }}>
-            AI Agents, Automation, Digital Marketing and Content Creation — taught live, by practitioners.
+            AI Agents, Automation, Digital Marketing and Content Creation - taught live, by practitioners.
           </p>
         </div>
       </div>

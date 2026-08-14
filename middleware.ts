@@ -39,7 +39,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  // Role check for /admin — student/trainer accounts get bounced to the portal
+  // Role check for /admin - student/trainer accounts get bounced to the portal
   if (user && path.startsWith(ADMIN_PREFIX)) {
     const { data: profile } = await supabase
       .from("profiles")

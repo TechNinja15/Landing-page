@@ -13,8 +13,7 @@ export async function getAdminDashboardData(supabase: SupabaseClient<Database>) 
       .from("enrollments")
       .select("id, student_id, course_id, batch_id, progress_percent, courses(title), batches(name), profiles:student_id(full_name)")
       .eq("status", "active"),
-    // Revenue chart intentionally stays empty until payments exist —
-    // no invented figures, matching the rest of this build.
+    // Revenue chart intentionally stays empty until payments exist - // no invented figures, matching the rest of this build.
     supabase.from("payments").select("student_id, course_id, amount, status, paid_at").eq("status", "paid"),
   ]);
 

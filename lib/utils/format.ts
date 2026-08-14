@@ -7,7 +7,7 @@
  */
 
 export function formatDateTime(iso: string | null | undefined): string {
-  if (!iso) return "—";
+  if (!iso) return " - ";
   const d = new Date(iso);
   const today = new Date();
   const isToday = d.toDateString() === today.toDateString();
@@ -42,6 +42,6 @@ export function formatDueDate(iso: string | null | undefined): string {
 /** Short date used in the admin leads table ("Aug 7"), distinct from
  * formatDateTime's fuller "Today, 7:00 PM" style used in the student portal. */
 export function formatShortDate(iso: string | null | undefined): string {
-  if (!iso) return "—";
+  if (!iso) return " - ";
   return new Date(iso).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
 }

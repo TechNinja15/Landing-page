@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
  * magic link) points here first via `emailRedirectTo` /
  * `redirectTo`, with a `code` query param. This exchanges that code
  * for a real session (setting the auth cookies), then forwards the
- * user on to wherever they actually need to go — `next` if the
+ * user on to wherever they actually need to go - `next` if the
  * caller specified one (forgot-password does, pointing at
  * /reset-password), otherwise role-based like login does.
  */

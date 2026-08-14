@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 
 /* ============================================================
-   THRIVE SKILL TECH — brand tokens (from Brand Identity System v1.0)
+   THRIVE SKILL TECH - brand tokens (from Brand Identity System v1.0)
    ============================================================ */
 const C = {
   purple: "#8B5CF6",
@@ -48,7 +48,7 @@ const fontBody = "'Inter', sans-serif";
 const fontMono = "'IBM Plex Mono', monospace";
 
 /* ============================================================
-   Logo — inlined official master artwork (TST monogram)
+   Logo - inlined official master artwork (TST monogram)
    ============================================================ */
 function LogoMark({ size = 40 }) {
   return (
@@ -73,7 +73,7 @@ function LogoMark({ size = 40 }) {
 }
 
 /* ============================================================
-   Signature element — "Content → Career" thread
+   Signature element - "Content -> Career" thread
    A single hand-drawn scribble on the left resolves into a clean
    ascending line on the right, threading through the three domain
    pills. This is the tagline ("Content to Career") made literal
@@ -167,7 +167,7 @@ function Reveal({ children, className = "", delay = 0 }) {
 }
 
 /* ============================================================
-   Buttons — per brand system (09 Buttons)
+   Buttons - per brand system (09 Buttons)
    ============================================================ */
 function Button({ variant = "primary", children, icon, className = "", style, ...props }) {
   const base = {
@@ -202,7 +202,7 @@ function Button({ variant = "primary", children, icon, className = "", style, ..
 }
 
 /* ============================================================
-   Data — real content pulled from curriculum docs / brief.
+   Data - real content pulled from curriculum docs / brief.
    Stats intentionally show placeholders, not invented numbers.
    ============================================================ */
 const COURSES = [
@@ -210,23 +210,23 @@ const COURSES = [
     id: "ai-agents",
     tag: "Most in-demand",
     title: "AI Agents & Automation Mastery",
-    duration: "10–12 Weeks",
+    duration: "10-12 Weeks",
     mode: "Live Online / Hybrid",
-    level: "Beginner → Intermediate",
+    level: "Beginner -> Intermediate",
     icon: <Bot size={22} />,
     accent: C.purple,
     summary:
-      "Build agentic workflows and marketing automations with Python, LangChain and LangGraph — from your first API call to a deployed multi-agent system.",
+      "Build agentic workflows and marketing automations with Python, LangChain and LangGraph - from your first API call to a deployed multi-agent system.",
     modules: [
       "AI & LLM Fundamentals, Prompt Engineering",
-      "Agent Architecture — Planning, Memory, Tool Use",
+      "Agent Architecture - Planning, Memory, Tool Use",
       "LangChain: Models, Chains, Tools, Memory",
       "LangGraph: States, Nodes, Conditional Routing",
       "Retrieval-Augmented Generation & Vector DBs",
-      "Multi-Agent Systems (Research → Writer → Editor)",
+      "Multi-Agent Systems (Research -> Writer -> Editor)",
       "WhatsApp & Voice Agents, n8n, Zapier, Make.com",
       "OpenAI API, Anthropic API, Supabase integration",
-      "Deployment — FastAPI, Streamlit, monitoring",
+      "Deployment - FastAPI, Streamlit, monitoring",
     ],
     projects: ["SEO Content Assistant", "AI Blog Production Workflow", "Multi-Agent Marketing Agency", "Capstone: Your AI Marketing Employee"],
     certificate: "Verified certificate with QR code",
@@ -235,20 +235,20 @@ const COURSES = [
     id: "digital-marketing",
     tag: "Career fundamentals",
     title: "Digital Marketing Professional",
-    duration: "8–10 Weeks · 28+ Hours",
+    duration: "8-10 Weeks · 28+ Hours",
     mode: "Live Online / Hybrid",
-    level: "Beginner → Advanced",
+    level: "Beginner -> Advanced",
     icon: <Megaphone size={22} />,
     accent: C.orange,
     summary:
-      "A complete, hour-mapped curriculum from website planning to paid media — SEO, Google & Meta Ads, analytics and conversion, taught end to end.",
+      "A complete, hour-mapped curriculum from website planning to paid media - SEO, Google & Meta Ads, analytics and conversion, taught end to end.",
     modules: [
       "Digital Marketing Fundamentals & AIDA Funnel",
-      "Website Planning — WordPress, HTML/CSS, 5-page build",
+      "Website Planning - WordPress, HTML/CSS, 5-page build",
       "Google Analytics, Search Console, Technical SEO",
       "On-Page, Off-Page & Local SEO, Competitor Analysis",
-      "Google Ads — Search, Display, Video, Shopping, Remarketing",
-      "Meta Ads — Campaign Structure, Pixels, Lookalike Audiences",
+      "Google Ads - Search, Display, Video, Shopping, Remarketing",
+      "Meta Ads - Campaign Structure, Pixels, Lookalike Audiences",
       "LinkedIn, Pinterest, Quora, Snapchat, WhatsApp & SMS Marketing",
       "Email Marketing, Copywriting, Content & Affiliate Marketing",
       "Online Reputation Management",
@@ -260,9 +260,9 @@ const COURSES = [
     id: "content-branding",
     tag: "Creator track",
     title: "Content Creation & Personal Branding",
-    duration: "6–8 Weeks",
+    duration: "6-8 Weeks",
     mode: "Live Online / Hybrid",
-    level: "Beginner → Intermediate",
+    level: "Beginner -> Intermediate",
     icon: <PenTool size={22} />,
     accent: C.gold,
     summary:
@@ -272,7 +272,7 @@ const COURSES = [
       "Instagram & Reels Growth, Short-form Content",
       "YouTube Fundamentals",
       "LinkedIn for Personal Branding",
-      "Video Editing — CapCut & Canva",
+      "Video Editing - CapCut & Canva",
       "AI-Assisted Content Creation",
       "Portfolio Building",
     ],
@@ -291,20 +291,20 @@ const WHY_US = [
 ];
 
 const FAQS = [
-  { q: "How long are the courses?", a: "Programs run 6–12 weeks depending on the track, delivered live online or hybrid, with recordings available for every session." },
-  { q: "Is there EMI or scholarship support?", a: "Yes — flexible payment plans and merit-based scholarships are available. Speak with a counsellor during your free demo to see what applies to you." },
+  { q: "How long are the courses?", a: "Programs run 6-12 weeks depending on the track, delivered live online or hybrid, with recordings available for every session." },
+  { q: "Is there EMI or scholarship support?", a: "Yes - flexible payment plans and merit-based scholarships are available. Speak with a counsellor during your free demo to see what applies to you." },
   { q: "Do I get a certificate?", a: "Every completed course issues a verified certificate with a unique ID and QR code, shareable directly to LinkedIn." },
   { q: "What if I miss a live class?", a: "All sessions are recorded and added to your Student Portal within 24 hours, so you never lose your place." },
-  { q: "Is placement assistance guaranteed?", a: "We provide resume building, mock interviews and active placement support — outcomes depend on your portfolio and effort, and we're upfront about that." },
+  { q: "Is placement assistance guaranteed?", a: "We provide resume building, mock interviews and active placement support - outcomes depend on your portfolio and effort, and we're upfront about that." },
 ];
 
 /* ============================================================
    Main Page
    ============================================================ */
-// Real WhatsApp deep link from the brand doc — used by every WhatsApp CTA.
+// Real WhatsApp deep link from the brand doc - used by every WhatsApp CTA.
 const WHATSAPP_LINK = "https://wa.me/918369953959?text=Hi%2C%20I'd%20like%20to%20know%20more%20about%20Thrive%20Skill%20Tech%20courses.";
 
-// Google Sheets mirroring now happens server-side in /api/leads (route.ts) —
+// Google Sheets mirroring now happens server-side in /api/leads (route.ts) -
 // set GOOGLE_SHEET_WEBHOOK_URL as an environment variable there, not here.
 // Keeping API keys and webhook URLs out of client bundles is the point.
 
@@ -407,7 +407,7 @@ function BookDemoModal({ open, onClose, notify, presetCourse }) {
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
   // Posts to /api/leads (the Next.js route in route.ts) which writes to
-  // Supabase server-side and mirrors into Google Sheets — replacing the
+  // Supabase server-side and mirrors into Google Sheets - replacing the
   // old client-side no-cors fetch, so this can now read a real
   // success/failure response instead of assuming it worked.
   const handleSubmit = async (e) => {
@@ -422,7 +422,7 @@ function BookDemoModal({ open, onClose, notify, presetCourse }) {
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, source: "Website — Book Demo" }),
+        body: JSON.stringify({ ...form, source: "Website - Book Demo" }),
       });
 
       if (!res.ok) {
@@ -435,9 +435,9 @@ function BookDemoModal({ open, onClose, notify, presetCourse }) {
       onClose();
     } catch (err) {
       // In this standalone preview there's no live /api/leads to hit, so
-      // this branch is expected here — in the deployed Next.js app it
+      // this branch is expected here - in the deployed Next.js app it
       // only fires on a genuine failure.
-      notify("Couldn't reach the booking API in this preview — wire up /api/leads to test live.");
+      notify("Couldn't reach the booking API in this preview - wire up /api/leads to test live.");
     } finally {
       setSubmitting(false);
     }
@@ -455,7 +455,7 @@ function BookDemoModal({ open, onClose, notify, presetCourse }) {
           <h3 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 21, color: C.aubergine }}>Book your free demo</h3>
           <button type="button" onClick={onClose} aria-label="Close"><X size={20} style={{ opacity: 0.5 }} /></button>
         </div>
-        <p style={{ fontSize: 13.5, opacity: 0.6, marginBottom: 20 }}>30 minutes, no pressure — see the curriculum and ask a trainer anything.</p>
+        <p style={{ fontSize: 13.5, opacity: 0.6, marginBottom: 20 }}>30 minutes, no pressure - see the curriculum and ask a trainer anything.</p>
 
         {[
           { key: "name", label: "Full name", type: "text" },
@@ -530,7 +530,7 @@ export default function ThriveSkillTechLanding() {
 
   const notify = (msg) => setToast(msg);
 
-  // Same /api/leads backend as the demo booking modal — just tagged
+  // Same /api/leads backend as the demo booking modal - just tagged
   // with a different source so the CRM can tell resource downloads
   // apart from demo bookings in the leads table.
   const handleLeadSubmit = async (e) => {
@@ -547,14 +547,14 @@ export default function ThriveSkillTechLanding() {
           name: leadForm.name,
           email: leadForm.email,
           phone: leadForm.phone || undefined,
-          source: "Website — Free Resources",
+          source: "Website - Free Resources",
         }),
       });
       if (!res.ok) throw new Error();
       notify("Sent! Check your inbox for the resources.");
       setLeadForm({ name: "", email: "", phone: "" });
     } catch {
-      notify("Couldn't reach the booking API in this preview — wire up /api/leads to test live.");
+      notify("Couldn't reach the booking API in this preview - wire up /api/leads to test live.");
     }
   };
 
@@ -685,7 +685,7 @@ export default function ThriveSkillTechLanding() {
             <Reveal delay={0.16}>
               <p style={{ fontSize: 18, lineHeight: 1.6, marginTop: 22, maxWidth: 480, opacity: 0.85 }}>
                 Learn AI Agents, Automation, Digital Marketing and Content Creation from industry
-                practitioners — through live instruction, real projects, and a portfolio that
+                practitioners - through live instruction, real projects, and a portfolio that
                 gets you hired.
               </p>
             </Reveal>
@@ -718,10 +718,10 @@ export default function ThriveSkillTechLanding() {
             <Reveal delay={0.32}>
               <div className="flex gap-8 mt-14 flex-wrap" style={{ fontFamily: fontMono }}>
                 {[
-                  { k: "students", v: "—" },
-                  { k: "projects shipped", v: "—" },
+                  { k: "students", v: " - " },
+                  { k: "projects shipped", v: " - " },
                   { k: "live courses", v: "3" },
-                  { k: "industry experts", v: "—" },
+                  { k: "industry experts", v: " - " },
                 ].map((s) => (
                   <div key={s.k}>
                     <div style={{ fontSize: 26, fontWeight: 600, color: C.purple }}>{s.v}</div>
@@ -730,7 +730,7 @@ export default function ThriveSkillTechLanding() {
                 ))}
               </div>
               <p style={{ fontSize: 11.5, opacity: 0.5, marginTop: 8 }}>
-                Live figures publish here once available — set from the Admin Portal, never invented.
+                Live figures publish here once available - set from the Admin Portal, never invented.
               </p>
             </Reveal>
           </div>
@@ -752,7 +752,7 @@ export default function ThriveSkillTechLanding() {
           {[
             { title: "Mission", body: "Empower learners through practical AI education, real-world projects, mentorship, and career-focused learning." },
             { title: "Vision", body: "To become India's most trusted AI-first learning institution, preparing students for the future of work." },
-            { title: "Promise", body: "We don't teach software. We build AI-ready professionals — one live project at a time." },
+            { title: "Promise", body: "We don't teach software. We build AI-ready professionals - one live project at a time." },
           ].map((item, i) => (
             <Reveal key={item.title} delay={i * 0.08}>
               <div className="rounded-3xl p-7 h-full" style={{ background: cardBg, border: `1px solid ${cardBorder}` }}>
@@ -875,7 +875,7 @@ export default function ThriveSkillTechLanding() {
                 Get the AI Prompt Guide & 50 AI Tools list
               </h2>
               <p style={{ opacity: 0.75, marginTop: 14, lineHeight: 1.6, maxWidth: 440 }}>
-                Practical, no-fluff guides used inside our own courses — sent straight to your
+                Practical, no-fluff guides used inside our own courses - sent straight to your
                 inbox, no obligation to enrol.
               </p>
               <ul className="mt-6 space-y-2.5">

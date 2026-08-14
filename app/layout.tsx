@@ -26,13 +26,13 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://thriveskilltech.com"),
   title: {
-    default: "Thrive Skill Tech — Content to Career",
+    default: "Thrive Skill Tech - Content to Career",
     template: "%s | Thrive Skill Tech",
   },
   description:
-    "Learn AI Agents, Automation, Digital Marketing and Content Creation from industry practitioners — live instructor-led training with real projects and career support.",
+    "Learn AI Agents, Automation, Digital Marketing and Content Creation from industry practitioners - live instructor-led training with real projects and career support.",
   openGraph: {
-    title: "Thrive Skill Tech — Content to Career",
+    title: "Thrive Skill Tech - Content to Career",
     description:
       "AI-first career accelerator: AI Agents & Automation, Digital Marketing, and Content Creation & Personal Branding.",
     url: "https://thriveskilltech.com",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Thrive Skill Tech — Content to Career",
+    title: "Thrive Skill Tech - Content to Career",
     description: "Learn AI Agents, Automation, Digital Marketing and Content Creation from industry practitioners.",
   },
   // TODO: add icons.icon / icons.apple once favicon assets are exported

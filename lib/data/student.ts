@@ -3,12 +3,12 @@ import type { Database } from "@/types/database";
 
 /**
  * All queries here run server-side (called from app/portal/page.tsx,
- * a Server Component) with the user's own session — so RLS applies
+ * a Server Component) with the user's own session - so RLS applies
  * exactly as it would for any authenticated request. Nothing here
  * uses the service-role client.
  *
  * Deliberately split into several targeted queries rather than one
- * deep PostgREST embed — easier to reason about, and avoids the
+ * deep PostgREST embed - easier to reason about, and avoids the
  * embedded-filter footguns (e.g. filtering a joined table by a
  * column that isn't the join key) that come up with nested selects.
  */
@@ -50,8 +50,7 @@ export async function getStudentDashboardData(supabase: SupabaseClient<Database>
       .limit(5),
   ]);
 
-  // Submissions are fetched separately (not embedded) and merged in JS —
-  // more reliable than PostgREST's embedded-resource filtering for a
+  // Submissions are fetched separately (not embedded) and merged in JS - // more reliable than PostgREST's embedded-resource filtering for a
   // "give me my submission, if I have one, for each assignment" shape.
   const assignmentIds = (assignmentsRes.data ?? []).map((a: any) => a.id);
   const submissionsRes = assignmentIds.length
@@ -78,7 +77,7 @@ export async function getStudentDashboardData(supabase: SupabaseClient<Database>
  * Module/lesson breakdown for a single course, with per-module
  * completion counts against the student's lesson_progress rows.
  * Called for whichever enrollment the student is currently viewing
- * in "My Courses" — not all enrollments at once, to keep this cheap.
+ * in "My Courses" - not all enrollments at once, to keep this cheap.
  */
 export async function getCourseDetail(supabase: SupabaseClient<Database>, enrollmentId: string, courseId: string) {
   const [modulesRes, progressRes] = await Promise.all([

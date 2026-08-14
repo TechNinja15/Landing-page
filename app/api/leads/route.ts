@@ -7,18 +7,18 @@ import { createServiceClient } from "@/lib/supabase/server";
  * Real backend for every lead-capturing form on the site (Book
  * Demo modal, resources lead magnet, contact form). Replaces the
  * client-side `fetch(..., { mode: "no-cors" })` call to Apps
- * Script directly — that approach can't report success/failure
+ * Script directly - that approach can't report success/failure
  * back to the browser. This route can, because it does both
  * writes server-side and returns a real JSON response.
  *
  * Writes to two places:
- *   1. Supabase `leads` table — source of truth, drives the
+ *   1. Supabase `leads` table - source of truth, drives the
  *      admin CRM.
- *   2. Google Sheets, via the Apps Script web app — kept as a
+ *   2. Google Sheets, via the Apps Script web app - kept as a
  *      convenient parallel view non-technical staff can check
  *      without logging into the admin portal.
  *
- * Sheets failing does NOT fail the request — Supabase is the
+ * Sheets failing does NOT fail the request - Supabase is the
  * source of truth. Supabase failing DOES fail the request, since
  * that's where the CRM reads from.
  * ============================================================
@@ -46,7 +46,7 @@ function isValidLead(body: any): body is LeadPayload {
   );
 }
 
-// Very small in-memory rate limit — good enough to blunt basic
+// Very small in-memory rate limit - good enough to blunt basic
 // bot spam without adding infrastructure. For real production
 // traffic, put this behind Cloudflare Turnstile / reCAPTCHA
 // (per the brief's SECURITY section) instead of relying on this alone.
@@ -62,7 +62,7 @@ function isRateLimited(ip: string): boolean {
     recentSubmissions.set(key, now);
     return false;
   }
-  return false; // window bookkeeping simplified — swap for a real
+  return false; // window bookkeeping simplified - swap for a real
   // sliding-window counter (or Upstash/Redis) before relying on
   // this in production; this stub exists so the shape is right.
 }
@@ -70,7 +70,7 @@ function isRateLimited(ip: string): boolean {
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for") ?? "unknown";
   if (isRateLimited(ip)) {
-    return NextResponse.json({ error: "Too many requests — try again shortly." }, { status: 429 });
+    return NextResponse.json({ error: "Too many requests - try again shortly." }, { status: 429 });
   }
 
   let body: unknown;
@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
   try {
     const supabase = createServiceClient();
 
-    // course_interested expects a courses.id — look it up by title
+    // course_interested expects a courses.id - look it up by title
     // if one was provided, rather than assuming the client sent a UUID.
     let courseId: string | null = null;
     if (lead.course && lead.course !== "Not sure yet") {
@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("Supabase lead insert failed:", err);
     return NextResponse.json(
-      { error: "Couldn't save your booking right now — please try WhatsApp instead." },
+      { error: "Couldn't save your booking right now - please try WhatsApp instead." },
       { status: 502 }
     );
   }

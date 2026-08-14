@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 
 /* ============================================================
-   Brand tokens — identical to the marketing site build
+   Brand tokens - identical to the marketing site build
    ============================================================ */
 const C = {
   purple: "#8B5CF6",
@@ -47,11 +47,11 @@ const fontMono = "'IBM Plex Mono', monospace";
 
 /* ============================================================
    Formatting helpers for data coming from Supabase (ISO
-   timestamps, etc.) — the mock data used to be pre-formatted
+   timestamps, etc.) - the mock data used to be pre-formatted
    strings like "Today, 7:00 PM"; real rows aren't.
    ============================================================ */
 function formatDateTime(iso) {
-  if (!iso) return "—";
+  if (!iso) return " - ";
   const d = new Date(iso);
   const today = new Date();
   const isToday = d.toDateString() === today.toDateString();
@@ -316,7 +316,7 @@ function DashboardHome({ setActive, notify, profile, enrollments, liveClasses, a
           <button onClick={() => setActive("assignments")} style={{ fontSize: 13, color: C.purple, fontWeight: 600 }}>View all</button>
         </div>
         {pendingAssignments.length === 0 ? (
-          <p style={{ fontSize: 13.5, opacity: 0.5, padding: "8px 0" }}>Nothing pending — you're caught up.</p>
+          <p style={{ fontSize: 13.5, opacity: 0.5, padding: "8px 0" }}>Nothing pending - you're caught up.</p>
         ) : (
           <div className="divide-y" style={{ borderColor: "rgba(22,0,30,0.06)" }}>
             {pendingAssignments.map((a) => (
@@ -325,7 +325,7 @@ function DashboardHome({ setActive, notify, profile, enrollments, liveClasses, a
                   <div style={{ fontSize: 14, fontWeight: 500 }}>{a.title}</div>
                   <div style={{ fontSize: 12, opacity: 0.55 }}>{a.courses?.title}</div>
                 </div>
-                <Pill tone={a.submission ? "orange" : "neutral"}>{a.submission ? "Submitted — awaiting review" : formatDueDate(a.due_date)}</Pill>
+                <Pill tone={a.submission ? "orange" : "neutral"}>{a.submission ? "Submitted - awaiting review" : formatDueDate(a.due_date)}</Pill>
               </div>
             ))}
           </div>
@@ -496,7 +496,7 @@ function LiveClassesScreen({ liveClasses, notify }) {
               <Button
                 variant="primary"
                 icon={<Play size={14} />}
-                onClick={() => (l.zoom_link ? window.open(l.zoom_link, "_blank") : notify("Zoom link not added yet — check back closer to class time"))}
+                onClick={() => (l.zoom_link ? window.open(l.zoom_link, "_blank") : notify("Zoom link not added yet - check back closer to class time"))}
               >
                 Join
               </Button>
@@ -516,7 +516,7 @@ function AssignmentsScreen({ assignments: initialAssignments, studentId, notify 
 
   const [submitting, setSubmitting] = useState(null); // assignment id currently submitting
 
-  // Real insert into `submissions` — RLS (0005_row_level_security.sql)
+  // Real insert into `submissions` - RLS (0005_row_level_security.sql)
   // only allows a student to insert their own submission, so studentId
   // must match the authenticated user or this fails at the database.
   const handleSubmit = async (a) => {
@@ -543,7 +543,7 @@ function AssignmentsScreen({ assignments: initialAssignments, studentId, notify 
     setSubmitting(null);
 
     if (error) {
-      notify(error.code === "23505" ? "You've already submitted this assignment" : "Couldn't submit — try again");
+      notify(error.code === "23505" ? "You've already submitted this assignment" : "Couldn't submit - try again");
       return;
     }
 
@@ -573,7 +573,7 @@ function AssignmentsScreen({ assignments: initialAssignments, studentId, notify 
                 <div style={{ fontSize: 12.5, opacity: 0.6, marginTop: 3 }}>{a.courses?.title}</div>
               </div>
               <Pill tone={isReviewed ? "purple" : sub ? "orange" : "neutral"}>
-                {isReviewed ? `${sub.score ?? "—"}/100` : sub ? "Submitted — awaiting review" : formatDueDate(a.due_date)}
+                {isReviewed ? `${sub.score ?? " - "}/100` : sub ? "Submitted - awaiting review" : formatDueDate(a.due_date)}
               </Pill>
             </div>
             {isReviewed ? (
@@ -651,7 +651,7 @@ function CertificatesScreen({ certificates, enrollments, notify }) {
             <Button
               variant="accent"
               icon={<Download size={14} />}
-              onClick={() => (c.pdf_url ? window.open(c.pdf_url, "_blank") : notify("PDF not generated yet — check back shortly"))}
+              onClick={() => (c.pdf_url ? window.open(c.pdf_url, "_blank") : notify("PDF not generated yet - check back shortly"))}
             >
               Download PDF
             </Button>
@@ -670,7 +670,7 @@ function CertificatesScreen({ certificates, enrollments, notify }) {
         <Card key={e.id} className="p-7 flex flex-col items-center justify-center text-center" style={{ borderStyle: "dashed" }}>
           <Clock size={26} style={{ opacity: 0.35, marginBottom: 10 }} />
           <div style={{ fontSize: 14, fontWeight: 500, opacity: 0.6 }}>{e.courses?.title}</div>
-          <div style={{ fontSize: 12.5, opacity: 0.45, marginTop: 4 }}>{e.progress_percent}% complete — certificate unlocks at 100%</div>
+          <div style={{ fontSize: 12.5, opacity: 0.45, marginTop: 4 }}>{e.progress_percent}% complete - certificate unlocks at 100%</div>
         </Card>
       ))}
       {certificates.length === 0 && inProgressWithoutCert.length === 0 && (
@@ -734,7 +734,7 @@ function ProfileScreen({ profile, notify }) {
       .update({ full_name: form.full_name, phone: form.phone, linkedin_url: form.linkedin_url, github_url: form.github_url })
       .eq("id", profile.id);
     setSaving(false);
-    notify(error ? "Couldn't save — try again" : "Profile updated");
+    notify(error ? "Couldn't save - try again" : "Profile updated");
   };
 
   return (
@@ -745,7 +745,7 @@ function ProfileScreen({ profile, notify }) {
         </div>
         <div>
           <div style={{ fontFamily: fontDisplay, fontWeight: 600, fontSize: 17 }}>{profile?.full_name || "Your name"}</div>
-          <button style={{ fontSize: 12.5, color: C.purple, fontWeight: 600 }} onClick={() => notify("Photo upload not wired up yet — needs a Supabase Storage bucket")}>
+          <button style={{ fontSize: 12.5, color: C.purple, fontWeight: 600 }} onClick={() => notify("Photo upload not wired up yet - needs a Supabase Storage bucket")}>
             Change photo
           </button>
         </div>
@@ -869,7 +869,7 @@ export default function StudentPortal({ initialData }) {
                 <input
                   placeholder="Search course content"
                   style={{ border: "none", outline: "none", background: "transparent", fontSize: 13.5, width: "100%" }}
-                  onKeyDown={(e) => e.key === "Enter" && e.currentTarget.value && notify(`Search isn't wired to course content yet — searched "${e.currentTarget.value}"`)}
+                  onKeyDown={(e) => e.key === "Enter" && e.currentTarget.value && notify(`Search isn't wired to course content yet - searched "${e.currentTarget.value}"`)}
                 />
               </div>
             </div>

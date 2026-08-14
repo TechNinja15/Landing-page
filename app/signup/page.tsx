@@ -63,7 +63,7 @@ export default function SignupPage() {
   return (
     <AuthShell
       title="Create your account"
-      subtitle="Start with any course — you can enrol after."
+      subtitle="Start with any course - you can enrol after."
       footer={
         <>
           Already have an account?{" "}

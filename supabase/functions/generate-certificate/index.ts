@@ -4,16 +4,16 @@
 // Deploy:  supabase functions deploy generate-certificate
 // Secrets: supabase secrets set SITE_URL=https://thriveskilltech.com
 //          (SUPABASE_URL, SUPABASE_ANON_KEY, and SUPABASE_SERVICE_ROLE_KEY
-//          are injected automatically by the platform — no need to set
+//          are injected automatically by the platform - no need to set
 //          those three yourself)
 // Invoke:  supabase.functions.invoke('generate-certificate', { body: { enrollment_id } })
 //          or { body: { bulk: true } } to scan every enrollment at 100%
-//          without a certificate yet — this is what the admin portal's
+//          without a certificate yet - this is what the admin portal's
 //          "Bulk generate" button calls.
 // ============================================================
 //
 // This function is intentionally the only place that writes to the
-// `certificates` table with a real PDF — nothing else in the app
+// `certificates` table with a real PDF - nothing else in the app
 // fabricates a certificate. It uses the service-role key (bypasses
 // RLS) because it runs server-side, triggered either by the database
 // trigger in 0007_certificate_trigger.sql or by an admin action, not
@@ -47,13 +47,13 @@ Deno.serve(async (req) => {
     // ---------- authorization ----------
     // Two legitimate callers:
     //  1. The database trigger (0007_certificate_generation.sql), which
-    //     sends `Authorization: Bearer <service-role key>` directly —
+    //     sends `Authorization: Bearer <service-role key>` directly -
     //     trusted implicitly, since only server-side SQL config has it.
     //  2. An admin/super_admin calling this from the admin portal's
-    //     "Bulk generate" button, sending their own user JWT — verified
+    //     "Bulk generate" button, sending their own user JWT - verified
     //     below by looking up their profile role with the service client
     //     (bypassing RLS is fine here, this IS the authorization check).
-    // Anyone else — including a logged-in student — is rejected. Without
+    // Anyone else - including a logged-in student - is rejected. Without
     // this check, any authenticated user could trigger bulk generation
     // for the entire student body, since Edge Functions are reachable
     // by anyone holding a valid Supabase JWT (even the anon key) unless
@@ -140,7 +140,7 @@ async function generateForEnrollment(supabase: any, enrollmentId: string, siteUr
   const certificateNumber = `TST-${new Date().getFullYear()}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
   const verifyUrl = `${siteUrl}/verify/${certificateNumber}`;
 
-  // QR code via a hosted generator rather than a Deno QR library — keeps
+  // QR code via a hosted generator rather than a Deno QR library - keeps
   // the function's dependency surface small. Swap for a self-hosted QR
   // library (e.g. deno.land/x/qrcode) if depending on a third party for
   // certificate generation is a concern at production scale.

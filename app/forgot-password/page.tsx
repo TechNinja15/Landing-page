@@ -23,7 +23,7 @@ export default function ForgotPasswordPage() {
     setLoading(false);
 
     // Always show the same success message regardless of whether the email
-    // exists — this avoids leaking which addresses have accounts.
+    // exists - this avoids leaking which addresses have accounts.
     if (resetError) {
       setError("Something went wrong. Please try again in a moment.");
       return;
