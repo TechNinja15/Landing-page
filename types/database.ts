@@ -121,18 +121,33 @@ export interface Certificate {
  * `createServerClient<Database>()` type-check. Expand with the
  * remaining tables (modules, lessons, batches, etc.) as you build
  * against them, or replace this file entirely with the generated one.
+ *
+ * NOTE: `Relationships: []` on every table and the empty `Views` /
+ * `Functions` / `Enums` / `CompositeTypes` blocks below are required —
+ * without them, Supabase's query builder generics (.select(), .insert(),
+ * .single(), .maybeSingle()) silently fall back to `never` in many
+ * places instead of producing a real inferred type or a clear error.
  */
 export interface Database {
   public: {
     Tables: {
-      profiles: { Row: Profile; Insert: Partial<Profile>; Update: Partial<Profile> };
-      courses: { Row: Course; Insert: Partial<Course>; Update: Partial<Course> };
-      modules: { Row: CourseModule; Insert: Partial<CourseModule>; Update: Partial<CourseModule> };
-      lessons: { Row: Lesson; Insert: Partial<Lesson>; Update: Partial<Lesson> };
-      batches: { Row: Batch; Insert: Partial<Batch>; Update: Partial<Batch> };
-      enrollments: { Row: Enrollment; Insert: Partial<Enrollment>; Update: Partial<Enrollment> };
-      leads: { Row: Lead; Insert: Partial<Lead>; Update: Partial<Lead> };
-      certificates: { Row: Certificate; Insert: Partial<Certificate>; Update: Partial<Certificate> };
+      profiles: { Row: Profile; Insert: Partial<Profile>; Update: Partial<Profile>; Relationships: [] };
+      courses: { Row: Course; Insert: Partial<Course>; Update: Partial<Course>; Relationships: [] };
+      modules: { Row: CourseModule; Insert: Partial<CourseModule>; Update: Partial<CourseModule>; Relationships: [] };
+      lessons: { Row: Lesson; Insert: Partial<Lesson>; Update: Partial<Lesson>; Relationships: [] };
+      batches: { Row: Batch; Insert: Partial<Batch>; Update: Partial<Batch>; Relationships: [] };
+      enrollments: { Row: Enrollment; Insert: Partial<Enrollment>; Update: Partial<Enrollment>; Relationships: [] };
+      leads: { Row: Lead; Insert: Partial<Lead>; Update: Partial<Lead>; Relationships: [] };
+      certificates: { Row: Certificate; Insert: Partial<Certificate>; Update: Partial<Certificate>; Relationships: [] };
     };
+    Views: Record<string, never>;
+    Functions: {
+      verify_certificate: {
+        Args: { cert_number: string };
+        Returns: any[];
+      };
+    };
+    Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
 }

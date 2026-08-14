@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import type { Profile } from "@/types/database";
 
 /**
  * Every Supabase auth email (signup confirmation, password reset,
@@ -34,7 +35,7 @@ export async function GET(request: NextRequest) {
     .from("profiles")
     .select("role")
     .eq("id", data.session.user.id)
-    .single();
+    .single<Pick<Profile, "role">>();
 
   const destination = profile && ["admin", "super_admin"].includes(profile.role) ? "/admin" : "/portal";
   return NextResponse.redirect(`${origin}${destination}`);

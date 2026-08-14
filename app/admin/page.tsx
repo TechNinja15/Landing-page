@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { getAdminDashboardData, getWebsiteSettings, getCounselors } from "@/lib/data/admin";
 import AdminPortal from "@/components/admin/AdminPortal";
+import type { Profile } from "@/types/database";
 
 export const metadata: Metadata = {
   title: "Admin Portal",
@@ -19,7 +20,11 @@ export default async function AdminPage() {
     redirect("/login?redirectTo=/admin");
   }
 
-  const { data: profile } = await supabase.from("profiles").select("role, full_name, email").eq("id", user.id).single();
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role, full_name, email")
+    .eq("id", user.id)
+    .single<Pick<Profile, "role" | "full_name" | "email">>();
 
   // middleware.ts checks this too - duplicated here deliberately, same
   // reasoning as portal/page.tsx: don't let the admin UI render even
