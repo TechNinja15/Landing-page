@@ -93,7 +93,7 @@ function ContentToCareerThread({ reduced }) {
 
   return (
     <div className="relative w-full" style={{ maxWidth: 620 }}>
-      <svg viewBox="0 0 620 360" width="100%" height="auto" fill="none">
+      <svg viewBox="0 0 620 360" width="100%" style={{ height: "auto" }} fill="none">
         <path
           ref={pathRef}
           d="M20,260 C55,230 40,190 75,180 C110,170 95,225 130,220 C165,215 150,150 190,155 C230,160 210,240 255,235 C310,229 300,120 360,110 C430,99 470,70 560,40"
@@ -108,25 +108,38 @@ function ContentToCareerThread({ reduced }) {
       </svg>
 
       {/* floating glass domain pills threaded along the path */}
-      <FloatPill style={{ left: "4%", top: "58%" }} icon={<PenTool size={14} />} label="Content" delay="0s" />
-      <FloatPill style={{ left: "34%", top: "36%" }} icon={<Bot size={14} />} label="AI Agents" delay=".4s" />
-      <FloatPill style={{ left: "58%", top: "52%" }} icon={<Megaphone size={14} />} label="Marketing" delay=".8s" />
-      <FloatPill style={{ left: "84%", top: "6%" }} icon={<Briefcase size={14} />} label="Career" delay="1.2s" accent />
+      <div
+        className="thread-pill absolute"
+        style={{ left: "14%", top: "34%", animationDelay: "0s" }}
+      >
+        <ThreadPill icon={<Bot size={13} />} label="AI Agents" />
+      </div>
+      <div
+        className="thread-pill absolute"
+        style={{ left: "44%", top: "24%", animationDelay: "1.4s" }}
+      >
+        <ThreadPill icon={<Megaphone size={13} />} label="Digital Mktg" />
+      </div>
+      <div
+        className="thread-pill absolute"
+        style={{ left: "70%", top: "6%", animationDelay: "2.8s" }}
+      >
+        <ThreadPill icon={<PenTool size={13} />} label="Content" accent />
+      </div>
     </div>
   );
 }
 
-function FloatPill({ style, icon, label, delay, accent }) {
+function ThreadPill({ icon, label, accent }) {
   return (
     <div
-      className="thread-pill absolute flex items-center gap-1.5 rounded-full backdrop-blur-md px-3 py-1.5 text-xs font-medium shadow-lg"
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
       style={{
-        ...style,
-        background: accent ? "rgba(250,223,99,0.9)" : "rgba(255,255,255,0.75)",
-        border: `1px solid ${accent ? C.gold : "rgba(139,92,246,0.25)"}`,
+        background: accent ? C.gold : "rgba(255,255,255,0.85)",
         color: C.aubergine,
-        fontFamily: fontBody,
-        animationDelay: delay,
+        boxShadow: "0 10px 25px -8px rgba(51,30,56,0.3)",
+        backdropFilter: "blur(8px)",
+        border: `1px solid ${accent ? "transparent" : "rgba(139,92,246,0.25)"}`,
       }}
     >
       <span style={{ color: accent ? C.aubergine : C.purple }}>{icon}</span>
@@ -169,7 +182,7 @@ function Reveal({ children, className = "", delay = 0 }) {
 /* ============================================================
    Buttons - per brand system (09 Buttons)
    ============================================================ */
-function Button({ variant = "primary", children, icon, className = "", style, ...props }) {
+function Button({ variant = "primary", children, icon, className = "", style, href, ...props }) {
   const base = {
     fontFamily: fontBody,
     fontWeight: 600,
@@ -182,6 +195,7 @@ function Button({ variant = "primary", children, icon, className = "", style, ..
     transition: "transform .2s ease, box-shadow .2s ease, background .2s ease",
     cursor: "pointer",
     border: "none",
+    textDecoration: "none",
   };
   const styles = {
     primary: { background: C.purple, color: C.white, boxShadow: "0 12px 40px -12px rgba(139,92,246,0.55)" },
@@ -189,6 +203,21 @@ function Button({ variant = "primary", children, icon, className = "", style, ..
     ghost: { background: "transparent", color: C.purple, border: `1px solid rgba(139,92,246,0.35)` },
     accent: { background: C.orange, color: C.aubergine, boxShadow: "0 12px 40px -14px rgba(255,165,82,0.6)" },
   };
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        {...props}
+        className={`btn-hover ${className}`}
+        style={{ ...base, ...styles[variant], ...style }}
+      >
+        {children}
+        {icon}
+      </a>
+    );
+  }
+
   return (
     <button
       {...props}
@@ -713,7 +742,11 @@ export default function ThriveSkillTechLanding() {
                 <Button
                   variant="secondary"
                   icon={<FileDown size={16} />}
-                  onClick={handleDownloadBrochure}
+                  href="/Thrive_Skill_Tech_Brochure.pdf"
+                  download="Thrive_Skill_Tech_Brochure.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => notify("Downloading Thrive Skill Tech Brochure…")}
                 >
                   Download Brochure
                 </Button>
