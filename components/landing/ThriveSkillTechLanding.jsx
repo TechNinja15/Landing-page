@@ -551,10 +551,12 @@ export default function ThriveSkillTechLanding() {
         }),
       });
       if (!res.ok) throw new Error();
-      notify("Sent! Check your inbox for the resources.");
+      notify("Sent! Check your inbox & downloading brochure now…");
+      handleDownloadBrochure();
       setLeadForm({ name: "", email: "", phone: "" });
     } catch {
-      notify("Couldn't reach the booking API in this preview - wire up /api/leads to test live.");
+      handleDownloadBrochure();
+      notify("Downloading brochure…");
     }
   };
 
@@ -570,6 +572,16 @@ export default function ThriveSkillTechLanding() {
   const text = dark ? C.lavender : C.aubergine;
   const cardBg = dark ? "rgba(255,255,255,0.06)" : C.white;
   const cardBorder = dark ? "rgba(255,255,255,0.10)" : "rgba(22,0,30,0.08)";
+
+  const handleDownloadBrochure = () => {
+    notify("Downloading Thrive Skill Tech Brochure…");
+    const link = document.createElement("a");
+    link.href = "/Thrive_Skill_Tech_Brochure.pdf";
+    link.download = "Thrive_Skill_Tech_Brochure.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div
@@ -701,7 +713,7 @@ export default function ThriveSkillTechLanding() {
                 <Button
                   variant="secondary"
                   icon={<FileDown size={16} />}
-                  onClick={() => notify("Brochure download starting…")}
+                  onClick={handleDownloadBrochure}
                 >
                   Download Brochure
                 </Button>
